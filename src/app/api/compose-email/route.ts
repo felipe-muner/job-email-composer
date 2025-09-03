@@ -48,13 +48,13 @@ function extractEmail(jobDescription: string): string {
 
 function generateSubject(jobDescription: string): string {
   const titleMatch = jobDescription.match(/(?:job title|position|role):\s*([^\n]+)/i) ||
-                     jobDescription.match(/(?:seeking|hiring|looking for)(?:\s+a)?\s+([^\n]+?)(?:\s+(?:developer|engineer|specialist))/i);
-  
+    jobDescription.match(/(?:seeking|hiring|looking for)(?:\s+a)?\s+([^\n]+?)(?:\s+(?:developer|engineer|specialist))/i);
+
   if (titleMatch) {
     const title = titleMatch[1].trim();
     return `Application for ${title} Position`;
   }
-  
+
   return 'Job Application - Full Stack Developer';
 }
 
@@ -72,7 +72,7 @@ function generateSignature(): string {
   return `Best regards,
 Felipe Muner
 Full Stack Developer
-Portfolio: https://felipemuner.dev
+Portfolio: https://felipemuner.work
 LinkedIn: https://linkedin.com/in/felipemuner
 GitHub: https://github.com/felipe-muner
 
