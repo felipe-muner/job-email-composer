@@ -4,33 +4,39 @@ interface PortfolioProject {
   name: string;
   description: string;
   tech: string[];
+  url: string;
 }
 
 const portfolioProjects: PortfolioProject[] = [
   {
-    name: "E-commerce Platform",
-    description: "Full-stack marketplace with React, Node.js, and PostgreSQL",
-    tech: ["React", "Node.js", "PostgreSQL", "Stripe"]
+    name: "ChainAbuse.com",
+    description: "Blockchain security platform for reporting and tracking cryptocurrency fraud",
+    tech: ["Next.js", "TypeScript", "PostgreSQL", "Blockchain APIs"],
+    url: "https://chainabuse.com"
   },
   {
-    name: "Task Management App",
-    description: "Real-time collaboration tool with WebSocket integration",
-    tech: ["Next.js", "Socket.io", "MongoDB", "Tailwind CSS"]
+    name: "Spoken.io",
+    description: "AI-powered speech analysis and communication enhancement platform",
+    tech: ["React", "Node.js", "AI/ML APIs", "WebRTC"],
+    url: "https://spoken.io"
   },
   {
-    name: "Analytics Dashboard",
-    description: "Data visualization platform with interactive charts",
-    tech: ["React", "D3.js", "Python", "FastAPI"]
+    name: "Tandem.space",
+    description: "Collaborative workspace platform for remote teams and project management",
+    tech: ["Next.js", "Socket.io", "MongoDB", "Real-time Collaboration"],
+    url: "https://tandem.space"
   },
   {
-    name: "Mobile Banking App",
-    description: "Cross-platform mobile app with secure authentication",
-    tech: ["React Native", "TypeScript", "Redux", "Firebase"]
+    name: "KohPhanganGuide.com",
+    description: "Comprehensive travel guide and booking platform for Koh Phangan island",
+    tech: ["WordPress", "PHP", "MySQL", "Booking Systems"],
+    url: "https://kohphanganguide.com"
   },
   {
-    name: "AI Content Generator",
-    description: "AI-powered content creation tool with OpenAI integration",
-    tech: ["Next.js", "OpenAI API", "Prisma", "TailwindCSS"]
+    name: "ReprogramAndTransform.com",
+    description: "Personal development and transformation coaching platform",
+    tech: ["React", "Strapi CMS", "Stripe", "Content Management"],
+    url: "https://reprogramandtransform.com"
   }
 ];
 
@@ -57,11 +63,9 @@ function generateHackerNoonParagraph(): string {
 }
 
 function generatePortfolioParagraph(): string {
-  const projectDescriptions = portfolioProjects.map(project => 
-    `${project.name} (${project.tech.join(', ')}): ${project.description}`
-  ).join('. ');
+  const projectUrls = portfolioProjects.map(project => project.url).join(', ');
 
-  return `I bring extensive experience in full-stack development with a proven track record of delivering scalable solutions. My recent portfolio includes: ${projectDescriptions}. These projects demonstrate my expertise in modern web technologies, database design, and user experience optimization. I consistently focus on writing clean, maintainable code while implementing best practices for performance and security. My diverse technical background enables me to adapt quickly to new technologies and contribute effectively to cross-functional teams.`;
+  return `I bring extensive experience in full-stack development with a proven track record of delivering scalable solutions. My recent portfolio includes: ${projectUrls}. These projects demonstrate my expertise in modern web technologies, database design, and user experience optimization. I consistently focus on writing clean, maintainable code while implementing best practices for performance and security. My diverse technical background enables me to adapt quickly to new technologies and contribute effectively to cross-functional teams.`;
 }
 
 function generateSignature(): string {
