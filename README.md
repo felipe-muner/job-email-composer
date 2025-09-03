@@ -191,4 +191,6 @@ If you find this project helpful, please consider:
 
 **Built with ❤️ by Felipe Muner**
 
+**Dedicated to Meron (https://github.com/meronogbai/) My friend who always motivates me**
+
 *Making job applications easier, one email at a time.*
