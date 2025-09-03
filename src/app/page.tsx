@@ -1,103 +1,192 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+
+interface ComposedEmail {
+  to: string;
+  subject: string;
+  body: string;
+}
+
+interface ApiResponse {
+  success: boolean;
+  email: ComposedEmail;
+  extractedInfo: {
+    emailFound: boolean;
+    subjectGenerated: boolean;
+    paragraphsAdded: number;
+  };
+  error?: string;
+}
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [jobDescription, setJobDescription] = useState("");
+  const [composedEmail, setComposedEmail] = useState<ComposedEmail | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    setComposedEmail(null);
+
+    try {
+      const response = await fetch("/api/compose-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ jobDescription }),
+      });
+
+      const data: ApiResponse = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to compose email");
+      }
+
+      setComposedEmail(data.email);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 p-4">
+      <div className="max-w-4xl mx-auto space-y-6">
+        <div className="text-center py-8">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+            Job Email Composer
+          </h1>
+          <p className="text-lg text-gray-600 dark:text-gray-400">
+            Transform job descriptions into professional application emails
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Compose Your Job Application Email</CardTitle>
+            <CardDescription>
+              Paste the job description below and get a professionally crafted email with subject line and content
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="job-description">Job Description</Label>
+                <Textarea
+                  id="job-description"
+                  placeholder="Paste the job description here..."
+                  value={jobDescription}
+                  onChange={(e) => setJobDescription(e.target.value)}
+                  className="min-h-[200px]"
+                  required
+                />
+              </div>
+              <Button type="submit" disabled={isLoading || !jobDescription.trim()}>
+                {isLoading ? "Composing..." : "Compose Email"}
+              </Button>
+            </form>
+
+            {error && (
+              <div className="mt-4 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                <p className="text-red-800 dark:text-red-200">{error}</p>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {composedEmail && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Your Composed Email</CardTitle>
+              <CardDescription>
+                Copy the fields below and paste them into your email client
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="to-email">To</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="to-email"
+                    value={composedEmail.to || "No email found in job description"}
+                    readOnly
+                    className="flex-1"
+                  />
+                  {composedEmail.to && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(composedEmail.to)}
+                    >
+                      Copy
+                    </Button>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="subject">Subject</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="subject"
+                    value={composedEmail.subject}
+                    readOnly
+                    className="flex-1"
+                  />
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => copyToClipboard(composedEmail.subject)}
+                  >
+                    Copy
+                  </Button>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email-body">Email Body</Label>
+                <div className="space-y-2">
+                  <Textarea
+                    id="email-body"
+                    value={composedEmail.body}
+                    readOnly
+                    className="min-h-[300px]"
+                  />
+                  <Button
+                    variant="outline"
+                    onClick={() => copyToClipboard(composedEmail.body)}
+                  >
+                    Copy Email Body
+                  </Button>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t">
+                <Button
+                  onClick={() => copyToClipboard(`To: ${composedEmail.to}\nSubject: ${composedEmail.subject}\n\n${composedEmail.body}`)}
+                  className="w-full"
+                >
+                  Copy Complete Email
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
     </div>
   );
 }
