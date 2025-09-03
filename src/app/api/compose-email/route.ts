@@ -29,13 +29,13 @@ const portfolioProjects: PortfolioProject[] = [
   {
     name: "KohPhanganGuide.com",
     description: "Comprehensive travel guide and booking platform for Koh Phangan island",
-    tech: ["WordPress", "PHP", "MySQL", "Booking Systems"],
+    tech: ["WordPress", "MySQL", "Booking Systems"],
     url: "https://kohphanganguide.com"
   },
   {
     name: "ReprogramAndTransform.com",
     description: "Personal development and transformation coaching platform",
-    tech: ["React", "Strapi CMS", "Stripe", "Content Management"],
+    tech: ["React", "Next.js", "Tailwind", "Shadcn", 'Vercel'],
     url: "https://reprogramandtransform.com"
   }
 ];
