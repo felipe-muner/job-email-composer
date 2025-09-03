@@ -58,25 +58,26 @@ function generateSubject(jobDescription: string): string {
   return 'Job Application - Full Stack Developer';
 }
 
-function generateHackerNoonParagraph(): string {
-  return `I discovered your company through HackerNoon, where I regularly follow technology trends and industry insights. Your organization's commitment to innovation and technical excellence immediately caught my attention. As an active member of the tech community, I appreciate companies that share knowledge and contribute to the broader developer ecosystem. The way your team approaches problem-solving and your focus on cutting-edge technologies align perfectly with my professional values and career aspirations. I'm particularly impressed by your company's transparency in sharing technical challenges and solutions with the community.`;
-}
+function generateEmailBody(): string {
+  return `Hi,
 
-function generatePortfolioParagraph(): string {
-  const projectUrls = portfolioProjects.map(project => project.url).join(', ');
+I saw your job post on Hacker News and I'm interested! I'm experienced in all the technologies in your stack so I'd be a good fit.
 
-  return `I bring extensive experience in full-stack development with a proven track record of delivering scalable solutions. My recent portfolio includes: ${projectUrls}. These projects demonstrate my expertise in modern web technologies, database design, and user experience optimization. I consistently focus on writing clean, maintainable code while implementing best practices for performance and security. My diverse technical background enables me to adapt quickly to new technologies and contribute effectively to cross-functional teams.`;
-}
+Past work:
+https://www.chainabuse.com/
+https://www.spoken.io/
+https://tandem.space/
+https://kohphanganguide.com/
+https://reprogramandtransform.com/
 
-function generateSignature(): string {
-  return `Best regards,
-Felipe Muner
-Full Stack Developer
-Portfolio: https://felipemuner.work
-LinkedIn: https://linkedin.com/in/felipemuner
-GitHub: https://github.com/felipe-muner
+Github: https://github.com/felipe-muner
+LinkedIn: https://www.linkedin.com/in/felipe-muner
 
-"Building the future, one line of code at a time."`;
+
+Resume attached below.
+
+Best,
+Felipe Muner`;
 }
 
 export async function POST(request: NextRequest) {
@@ -92,14 +93,12 @@ export async function POST(request: NextRequest) {
 
     const email = extractEmail(jobDescription);
     const subject = generateSubject(jobDescription);
-    const hackerNoonParagraph = generateHackerNoonParagraph();
-    const portfolioParagraph = generatePortfolioParagraph();
-    const signature = generateSignature();
+    const emailBody = generateEmailBody();
 
     const composedEmail = {
       to: email,
       subject: subject,
-      body: `${hackerNoonParagraph}\n\n${portfolioParagraph}\n\n${signature}`
+      body: emailBody
     };
 
     return NextResponse.json({
