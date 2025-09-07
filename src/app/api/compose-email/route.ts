@@ -59,7 +59,7 @@ function generateSubject(jobDescription: string): string {
 }
 
 function generateEmailBody(): string {
-  return `Hi,
+  return `Hello,
 
 I saw your job post on Hacker News and I'm interested! I'm experienced in all the technologies in your stack so I'd be a good fit.
 
